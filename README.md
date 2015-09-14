@@ -15,16 +15,18 @@ Glad you asked, when a native function is called through a special URL from the 
 
 This is how a native function is called from JavaScript, in this example:
 
-```nativeCall('ios:helloWorld?param1=foo&param2=bar');```
+<pre>
+nativeCall('ios:helloWorld?param1=foo&param2=bar');
 
 - "ios:" is the prefix
 - "helloWorld" is the native (Objective-C) method
 - "param1" and "param2" are the parameters
 - "foo" and "bar" are the values
+</pre>
 
 That is all. Below you can see pretty much the whole source code in less than 40 lines of code.
 
-```
+<pre>
 if ([requestURL hasPrefix:@"ios:"]) {
 
     NSLog(@"%@", requestURL);
@@ -59,8 +61,7 @@ if ([requestURL hasPrefix:@"ios:"]) {
     // cancel the location change
     return NO;
 }
-```
-
+</pre>
 
 #WHAT ABOUT ANDROID?
 If you are developing on Android platform, I am deeply sorry for you. I hope you see the error of your ways someday!
