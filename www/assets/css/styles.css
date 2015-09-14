@@ -1,0 +1,45 @@
+/*
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+GLOBAL STYLES
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #f8941d;
+	font-family: monospace;
+	color: #fff;
+}
+
+h1 {
+	margin: 10px 0px 10px 0px;
+	font-size: 28px;
+}
+
+/*
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+THEME / UI
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+*/
+
+.logo {
+	margin: 15px 0px 15px 0px;
+	max-width: 125px;
+}
+
+.section {
+	margin-bottom: 15px;
+	padding: 15px;
+	background: transparent;
+	border: 2px solid #fff;
+}
+
+.btn-danger {
+	background: #cf0000;
+	border-radius: 0px;
+}
+
+footer p {
+	font-family: monospace;
+}
