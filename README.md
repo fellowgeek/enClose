@@ -69,9 +69,10 @@ If you are developing on Android platform, I am deeply sorry for you. I hope you
 There is hope for all of us!
 
 #GIVE ME THE CODE
-Go ahead and click on the button below and the code is yours. OSX version coming soon.
+Go ahead and click on the link below and the code is yours. OSX version coming soon.
 
-Download enClose V1.2 iOS
+https://github.com/fellowgeek/enClose/archive/1.2.zip
+
 #LICENSE
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
