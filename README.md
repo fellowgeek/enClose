@@ -16,7 +16,7 @@ Glad you asked, when a native function is called through a special URL from the 
 This is how a native function is called from JavaScript, in this example:
 
 <pre>
-nativeCall('ios:helloWorld?param1=foo&param2=bar');
+nativeCall('ios:helloWorld?param1=foo&amp;param2=bar');
 
 - "ios:" is the prefix
 - "helloWorld" is the native (Objective-C) method
