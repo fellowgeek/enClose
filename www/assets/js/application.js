@@ -11,11 +11,13 @@ $(function() {
 var $debugMode = true;
 
 // call a native objective-c method
-function nativeCall($url) {
-    if($debugMode == true) { console.log($url); }
-    window.location = $url;
+function nativeCall($url, $delay) {
+    if (typeof($delay)==='undefined') $delay = 0;
+    window.setTimeout(function(){
+        if($debugMode == true) { console.log($url); }
+        window.location.hash = $url;
+    }, $delay);
 }
-
 /*
 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 STARTUP

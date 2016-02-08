@@ -13,7 +13,7 @@
 
     NSMutableDictionary *queryStringDictionary;
     NSString *iosParameters;
-
+    bool debugMode;
 }
 
 @property (weak, nonatomic) IBOutlet UIWebView *enCloseWebView;

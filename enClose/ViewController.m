@@ -52,6 +52,9 @@
     enCloseWebView.scrollView.bounces = NO;
     enCloseWebView.keyboardDisplayRequiresUserAction = NO;
 
+    // set debug mode
+    debugMode = YES;
+
 }
 
 /*
@@ -62,7 +65,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     
     // i.e. call a javascript function on web view
-
     NSLog(@"Ready.");
     
 }
@@ -74,18 +76,18 @@
  */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
-    NSString *requestURL =[[NSString alloc] initWithString:[[request URL] absoluteString]];
+    NSString *requestURL =[NSString stringWithFormat:@"%@", [[request URL] fragment]];
     
     if ([requestURL hasPrefix:@"ios:"]) {
-       
-        NSLog(@"%@", requestURL);
+        
+        if(debugMode == YES) { NSLog(@"%@", requestURL); }
         
         // call the native method if exists
         NSRange range;
         range = NSMakeRange(0, [requestURL rangeOfString:@"?"].location);
         NSString *iosMethod = [requestURL substringWithRange:range];
         iosMethod = [iosMethod stringByReplacingOccurrencesOfString:@"ios:" withString: @""];
-
+        
         range = NSMakeRange(([requestURL rangeOfString:@"?"].location + 1), ([requestURL length] - [requestURL rangeOfString:@"?"].location) - 1);
         iosParameters = [requestURL substringWithRange:range];
         
@@ -100,10 +102,10 @@
         
         SEL selector = NSSelectorFromString(iosMethod);
         if([self respondsToSelector: selector] == YES) {
-            #pragma clang diagnostic push
-            #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             [self performSelector:selector];
-            #pragma clang diagnostic pop
+#pragma clang diagnostic pop
         }
         // cancel the location change
         return NO;
@@ -111,7 +113,6 @@
     return YES;
     
 }
-
 /*
  --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
  system
@@ -147,7 +148,7 @@
     // play system alet sound
     AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
     AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:@"You have successfully called a native function from JavaScript. Congratulations!"];
-    [utterance setRate: 0.1];
+    [utterance setRate: 0.5];
     [synthesizer speakUtterance:utterance];
     
 }
