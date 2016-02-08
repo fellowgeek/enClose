@@ -71,7 +71,7 @@ There is hope for all of us!
 #GIVE ME THE CODE
 Go ahead and click on the link below and the code is yours. OSX version coming soon.
 
-https://github.com/fellowgeek/enClose/archive/1.2.zip
+https://github.com/fellowgeek/enClose/archive/1.3.zip
 
 #LICENSE
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
