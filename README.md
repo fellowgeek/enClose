@@ -1,3 +1,5 @@
+http://enclose.erfan.me
+
 #WHAT IS IT?
 enClose is a HTML5 wrapper for iOS and OSX. enClose comes with all the tools you know and love like jQuery, Bootstrap, Font Awesome, and FastClick but you don't have to use any of them if you don't want to.
 
@@ -35,13 +37,12 @@ $.enClose({
 Or if you don't want to use jQuery or JavaScript you can call native methods via URL, see example below:
 
 <pre>
-
-	<a href="ios:nativeCall?parameters">link label</a>
+&lt;a href="ios:nativeCall?parameters"&gt;Link Label&lt;/a&gt;
 
 	nativeCall: (String)			(name of the native (Objective-C) method)
 	parameters: (String)			(url parameters to be sent to the native (Objective-C) method)
 
-<a href="ios:helloWorld?message=Hello, from the other side.&speed=0.5&successCallback=successCallbackFunction">Hello World</a>	
+&lt;a href="ios:helloWorld?message=Hello, from the other side.&speed=0.5&successCallback=successCallbackFunction"&gt;Hello World&lt;/a&gt;
 
 </pre>
 
@@ -94,13 +95,8 @@ Go ahead and click on the link below and the code is yours. OSX version coming s
 https://github.com/fellowgeek/enClose/archive/1.4-iOS.zip
 
 #SUPPORT ME?
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="DUDTFAE4EYZUU">
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
+So long and thanks for all the fish!
+Goto http://enclose.erfan.me/#support
 
 #LICENSE
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
