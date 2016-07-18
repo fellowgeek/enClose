@@ -133,23 +133,25 @@
 
 /*
  --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
- test
+ helloWorld
  --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
  */
 - (void)helloWorld {
     
-    // perform objective-c command
-    NSLog(@"'helloWorld' method is called with the following parameters:");
     NSLog(@"\n%@", queryStringDictionary);
-    
-    // return results to web view
-    [self.enCloseWebView stringByEvaluatingJavaScriptFromString:@"$('#result').html('You have successfully called a native function from JavaScript. Congratulations!')"];
     
     // play system alet sound
     AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
-    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:@"You have successfully called a native function from JavaScript. Congratulations!"];
-    [utterance setRate: 0.5];
+    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:[queryStringDictionary objectForKey:@"message"]];
+    [utterance setRate: [[queryStringDictionary objectForKey:@"speed"] floatValue]];
     [synthesizer speakUtterance:utterance];
+    
+    // process nativeCall successCallback function and send data to web UI
+    NSString *successResponse = @"You have successfully called this native function.";
+    if([[queryStringDictionary objectForKey:@"callback"] isEqualToString:@""] == NO) {
+        NSString *javaScript = [NSString stringWithFormat:@"%@('%@');", [queryStringDictionary objectForKey:@"successCallback"], successResponse];
+        [self.enCloseWebView stringByEvaluatingJavaScriptFromString:javaScript];
+    }
     
 }
 

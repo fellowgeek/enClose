@@ -1,6 +1,13 @@
 /*
  ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
- UTILITY FUNCTIONS
+ GLOBAL VARIABLES
+ ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+*/
+var debugMode = true;
+
+/*
+ ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+ ATTACH FAST CLICK
  ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 */
 
@@ -8,16 +15,7 @@ $(function() {
 	FastClick.attach(document.body);
 });
 
-var $debugMode = true;
 
-// call a native objective-c method
-function nativeCall($url, $delay) {
-    if (typeof($delay)==='undefined') $delay = 0;
-    window.setTimeout(function(){
-        if($debugMode == true) { console.log($url); }
-        window.location.hash = $url;
-    }, $delay);
-}
 /*
 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 STARTUP
@@ -26,10 +24,22 @@ STARTUP
 $(document).ready(function() {
 
 	console.log('Ready.');
-                  
-    $('#test').click(function() {
-        console.log('Clicked.');
-        nativeCall('ios:helloWorld?paramText=test&paramNumber=666&paramJSON={"key1":"value1","key2":"value2"}');
+
+    $('.buttonTestenClose').click(function() {
+
+		$.enClose({
+			nativeCall: 'helloWorld',
+			data: {message: 'Hello, from the other side.', speed: 0.5},
+			successCallback: 'successCallbackFunction'
+		});
+
     });
 
 });
+
+function successCallbackFunction(response) {
+
+	console.log(response);
+	$('.response').html(response);
+
+}
