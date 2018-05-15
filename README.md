@@ -1,18 +1,18 @@
 http://enclose.erfan.me
 
-#WHAT IS IT?
+# WHAT IS IT?
 enClose is a HTML5 wrapper for iOS and OSX. enClose comes with all the tools you know and love like jQuery, Bootstrap, Font Awesome, and FastClick but you don't have to use any of them if you don't want to.
 
 FastClick makes your HTML5 apps work and feel as fast as native apps in terms of responsiveness on iOS.
 
 enClose lets you call native functions from your JavaScript app and call JavasSrcipt functions from your native part of the app.
 
-#WHY SHOULD I CARE?
-PhoneGap is limited, over complicated, and stupid. It only gives you a set of function through the API, why not take advantage of everything that iOS or OSX platform can offer, duh!.
+# WHY SHOULD I CARE?
+PhoneGap is limited, over complicated, It only gives you a set of function through the API, why not take advantage of everything that iOS or OSX platform can offer.
 
 enClose is super simple and flexible, you have the freedom to everything the way you want, the whole thing is 40 lines of code, really!
 
-#HOW DOES IT WORK?
+# HOW DOES IT WORK?
 Glad you asked, when a native function is called through a special URL from the JavaScript, the UIWebView on the native side catches this URL and calls the correct method on the native side. to call a JavaScript function from native we simply use the UIWebView method "stringByEvaluatingJavaScriptFromString".
 
 This is how a native function is called from JavaScript, in this example:
@@ -85,20 +85,20 @@ if ([requestURL hasPrefix:@"ios:"]) {
 }
 </pre>
 
-#WHAT ABOUT ANDROID?
-If you are developing on Android platform, DON'T.
+# WHAT ABOUT ANDROID?
+If you are developing on Android platform, download enClose from here: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
 
-#GIVE ME THE CODE
+# GIVE ME THE CODE
 Go ahead and click on the link below and the code is yours. OSX version coming soon. in the meantime you can turn this into the OSX version yourself.
 
 https://github.com/fellowgeek/enClose/archive/1.4-iOS.zip
 
-#SUPPORT ME?
+# SUPPORT ME?
 So long and thanks for all the fish!
-Goto http://enclose.erfan.me/#support
+Goto https://cash.me/$fellowgeek
 
-#LICENSE
+# LICENSE
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
