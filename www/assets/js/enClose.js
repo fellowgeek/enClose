@@ -28,7 +28,11 @@
 				console.log('enClose URI: ', enCloseURI);
 			}
 
-			window.location.hash = enCloseURI;
+			 try {
+			 	webkit.messageHandlers.enClose.postMessage(enCloseURI);
+			 } catch(err) {
+			 	console.error('Can not reach native code.');
+			 }
 		}
 	})
 }(jQuery));

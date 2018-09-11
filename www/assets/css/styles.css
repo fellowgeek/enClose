@@ -28,6 +28,10 @@ THEME / UI
 	max-width: 125px;
 }
 
+.row {
+	padding: 15px;
+}
+
 .section {
 	margin-bottom: 15px;
 	padding: 15px;
@@ -35,9 +39,16 @@ THEME / UI
 	border: 2px solid #fff;
 }
 
+.response {
+	padding: 10px 5px;
+	line-height: 25px;
+	background: #ffffee;
+	color: #333;
+}
+
 .btn-danger {
+	padding: 10px;
 	background: #cf0000;
-	border-radius: 0px;
 }
 
 footer p {

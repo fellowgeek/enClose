@@ -1,9 +1,9 @@
 //
 //  AppDelegate.h
-//  enClose
+//  enClose WKWebView
 //
-//  Created by Erfan Reed on 1/20/15.
-//  Copyright (c) 2015 malouf. All rights reserved.
+//  Created by Work on 2/27/18.
+//  Copyright © 2018 cvb.inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
