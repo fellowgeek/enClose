@@ -91,6 +91,7 @@ If you are developing on Android platform, download enClose from here: https://w
 Go ahead and click on the link below and the code is yours. OSX version coming soon. in the meantime you can turn this into the OSX version yourself.
 
 https://github.com/fellowgeek/enClose/archive/2.0-iOS-Objective-C.zip
+<br/>
 https://github.com/fellowgeek/enClose/archive/2.0-iOS-Swift.zip
 
 # SUPPORT ME?
