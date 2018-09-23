@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 #include <AVFoundation/AVFoundation.h>
 
-@interface ViewController : UIViewController <WKScriptMessageHandler> {
+@interface ViewController : UIViewController <WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate> {
 
 	NSMutableDictionary *queryStringDictionary;
 	NSString *iosParameters;
@@ -19,4 +19,3 @@
 }
 
 @end
-

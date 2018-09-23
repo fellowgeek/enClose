@@ -16,29 +16,44 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-	
-	queryStringDictionary = [[NSMutableDictionary alloc] init];
+- (void)loadView {
 
-	WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+	queryStringDictionary = [[NSMutableDictionary alloc] init];
+	iosParameters = @"";
+	debugMode = YES;
+
 	WKUserContentController *controller = [[WKUserContentController alloc] init];
 	[controller addScriptMessageHandler:self name:@"enClose"];
-	configuration.userContentController = controller;
-	
-	NSURL *requestURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"www"]];
-	
-	_webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:configuration];
-	[[_webView scrollView] setBounces:NO];
-	[_webView loadRequest:[NSURLRequest requestWithURL:requestURL]];
-	[self.view addSubview:_webView];
 
-	// set debug mode
-	debugMode = YES;
+	WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+	configuration.userContentController = controller;
+
+	_webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+	[_webView setUIDelegate:self];
+	[_webView setNavigationDelegate:self];
+	[[_webView scrollView] setBounces:NO];
+	self.view = _webView;
+	
+}
+	
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	NSURL *url = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"www"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	[_webView loadRequest:request];
 	
 }
 
+// disable user text selection
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+	
+	NSString *javascriptStyle = @"var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}'; var head = document.head || document.getElementsByTagName('head')[0]; var style = document.createElement('style'); style.type = 'text/css'; style.appendChild(document.createTextNode(css)); head.appendChild(style);";
+	[_webView evaluateJavaScript:javascriptStyle completionHandler:nil];
+	
+}
+	
+// enclose
 - (void)userContentController:(WKUserContentController *)userContentController
 	  didReceiveScriptMessage:(WKScriptMessage *)message {
 	
@@ -105,11 +120,10 @@
 	// play system alet sound
 	AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
 	AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:[queryStringDictionary objectForKey:@"message"]];
-	[utterance setRate: [[queryStringDictionary objectForKey:@"speed"] floatValue]];
 	[synthesizer speakUtterance:utterance];
 	
 	// process nativeCall successCallback function and send data to web UI
-	NSString *successResponse = @"You have successfully called this native function.";
+	NSString *successResponse = @"You have successfully called a native function from javascript, and you got schwifty!";
 	if([[queryStringDictionary objectForKey:@"callback"] isEqualToString:@""] == NO) {
 		NSString *javaScript = [NSString stringWithFormat:@"%@('%@');", [queryStringDictionary objectForKey:@"successCallback"], successResponse];
 		[_webView evaluateJavaScript:javaScript completionHandler:nil];
