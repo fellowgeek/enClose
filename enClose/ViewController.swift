@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 import AVFoundation
 
-class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
+class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
 
 	var queryStringDictionary = [String: String]()
 	var iosParameters = ""
@@ -27,6 +27,8 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
 		
 		webView = WKWebView(frame: .zero, configuration: webConfiguration)
 		webView.uiDelegate = self
+		webView.navigationDelegate = self
+		webView.scrollView.bounces = false
 		view = webView
 	}
 
@@ -41,6 +43,14 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
 
 	}
 
+	
+	// disable user text selection
+	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+		let javascriptStyle = "var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}'; var head = document.head || document.getElementsByTagName('head')[0]; var style = document.createElement('style'); style.type = 'text/css'; style.appendChild(document.createTextNode(css)); head.appendChild(style);"
+		webView.evaluateJavaScript(javascriptStyle, completionHandler: nil)
+	}
+	
+	// enclose
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 
 		guard let requestURL = message.body as? String else { return }
@@ -114,7 +124,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
 		synthesizer.speak(utterance)
 		
 		// process nativeCall successCallback function and send data to web UI
-		let successResponse = "You have successfully called this native function."
+		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
 		
 		var javaScript: String = ""
 		if let successCallback = queryStringDictionary["successCallback"] {
