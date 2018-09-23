@@ -17,20 +17,21 @@
 
 - (void)loadView {
 	
-	[super loadView];
-
 	queryStringDictionary = [[NSMutableDictionary alloc] init];
+	iosParameters = @"";
+	debugMode = YES;
 	
-	WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+	
 	WKUserContentController *controller = [[WKUserContentController alloc] init];
 	[controller addScriptMessageHandler:self name:@"enClose"];
-	configuration.userContentController = controller;
-
-	_webView = [[WKWebView alloc] initWithFrame:[[self view] bounds] configuration:configuration];
-	[self setView: _webView];
 	
-	// set debug mode
-	debugMode = YES;
+	WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+	configuration.userContentController = controller;
+	
+	_webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+	[_webView setUIDelegate:self];
+	[_webView setNavigationDelegate:self];
+	self.view = _webView;
 	
 }
 
@@ -38,13 +39,21 @@
 	
 	[super viewDidLoad];
 
-	// Do any additional setup after loading the view.
+	NSURL *url = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"www"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	[_webView loadRequest:request];
 	
-	NSURL *requestURL = [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"www"]];
- 	[_webView loadRequest: [NSURLRequest requestWithURL:requestURL]];
-
 }
 
+// disable user text selection
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+	
+	NSString *javascriptStyle = @"var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}'; var head = document.head || document.getElementsByTagName('head')[0]; var style = document.createElement('style'); style.type = 'text/css'; style.appendChild(document.createTextNode(css)); head.appendChild(style);";
+	[_webView evaluateJavaScript:javascriptStyle completionHandler:nil];
+	
+}
+	
+// enclose
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
 
 	NSString *requestURL =[NSString stringWithFormat:@"%@", message.body];
@@ -105,13 +114,11 @@
 */
 - (void)helloWorld {
 	
-	// play system alet sound
 	NSSpeechSynthesizer *synthesizer = [[NSSpeechSynthesizer alloc]init];
-	
 	[synthesizer  startSpeakingString:[queryStringDictionary objectForKey:@"message"]];
 	
 	// process nativeCall successCallback function and send data to web UI
-	NSString *successResponse = @"You have successfully called this native function.";
+	NSString *successResponse = @"You have successfully called a native function from javascript, and you got schwifty!";
 	if([[queryStringDictionary objectForKey:@"callback"] isEqualToString:@""] == NO) {
 		NSString *javaScript = [NSString stringWithFormat:@"%@('%@');", [queryStringDictionary objectForKey:@"successCallback"], successResponse];
 		[_webView evaluateJavaScript:javaScript completionHandler:nil];

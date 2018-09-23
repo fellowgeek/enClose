@@ -29,7 +29,9 @@ $(document).ready(function() {
 
 		$.enClose({
 			nativeCall: 'helloWorld',
-			data: {message: 'Hello, from the other side.', speed: 0.5},
+			data: {
+		  		message: 'Oh, yeah! You gotta get schwifty. You gotta get schwifty in here.'
+			},
 			successCallback: 'successCallbackFunction'
 		});
 
