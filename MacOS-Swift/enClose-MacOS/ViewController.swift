@@ -27,7 +27,11 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		webView = WKWebView(frame: .zero, configuration: webConfiguration)
 		webView.uiDelegate = self
 		webView.navigationDelegate = self
+        if #available(macOS 13.3, iOS 16.4, tvOS 16.4, *) {
+            webView.isInspectable = true
+        }
 		view = webView
+        
 	}
 	
 	override func viewDidLoad() {
@@ -50,18 +54,18 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	// enclose
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 		
-		guard let requestURL = message.body as? String else { return }
+		guard let request = message.body as? String else { return }
 		
-		if(requestURL.hasPrefix("ios:") == true) {
+		if(request.hasPrefix("ios:") == true) {
 			
 			// call the native method if exists
 			var range: NSRange
-			range = NSRange(location: 0, length: Int((requestURL as NSString).range(of: "?").location))
-			var iosMethod = (requestURL as NSString).substring(with: range)
+			range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
+			var iosMethod = (request as NSString).substring(with: range)
 			iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
 			
-			range = NSRange(location: Int((requestURL as NSString).range(of: "?").location) + 1, length: (requestURL.count - Int((requestURL as NSString).range(of: "?").location)) - 1)
-			iosParameters = (requestURL as NSString).substring(with: range)
+			range = NSRange(location: Int((request as NSString).range(of: "?").location) + 1, length: (request.count - Int((request as NSString).range(of: "?").location)) - 1)
+			iosParameters = (request as NSString).substring(with: range)
 			
 			queryStringDictionary.removeAll()
 			let urlComponents = iosParameters.components(separatedBy: "&")
@@ -78,7 +82,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 			}
 			
 			if(debugMode == true) {
-				print("requestURL: \(requestURL)")
+				print("request: \(request)")
 				print("queryStringDictionary: \(queryStringDictionary)")
 			}
 			

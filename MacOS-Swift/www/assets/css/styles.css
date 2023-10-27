@@ -49,6 +49,7 @@ THEME / UI
 .btn-danger {
 	padding: 10px;
 	background: #cf0000;
+	cursor: pointer;
 }
 
 footer p {

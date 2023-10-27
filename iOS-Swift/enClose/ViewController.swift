@@ -14,7 +14,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	var queryStringDictionary = [String: String]()
 	var iosParameters = ""
 	let debugMode = true
-	
+    let synthesizer = AVSpeechSynthesizer()
 	var webView: WKWebView!
 
 	override func loadView() {
@@ -53,18 +53,18 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	// enclose
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 
-		guard let requestURL = message.body as? String else { return }
+		guard let request = message.body as? String else { return }
 		
-		if(requestURL.hasPrefix("ios:") == true) {
+		if(request.hasPrefix("ios:") == true) {
 			
 			// call the native method if exists
 			var range: NSRange
-			range = NSRange(location: 0, length: Int((requestURL as NSString).range(of: "?").location))
-			var iosMethod = (requestURL as NSString).substring(with: range)
+			range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
+			var iosMethod = (request as NSString).substring(with: range)
 			iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
 			
-			range = NSRange(location: Int((requestURL as NSString).range(of: "?").location) + 1, length: (requestURL.count - Int((requestURL as NSString).range(of: "?").location)) - 1)
-			iosParameters = (requestURL as NSString).substring(with: range)
+			range = NSRange(location: Int((request as NSString).range(of: "?").location) + 1, length: (request.count - Int((request as NSString).range(of: "?").location)) - 1)
+			iosParameters = (request as NSString).substring(with: range)
 			
 			queryStringDictionary.removeAll()
 			let urlComponents = iosParameters.components(separatedBy: "&")
@@ -81,7 +81,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 			}
 					
 			if(debugMode == true) {
-				print("requestURL: \(requestURL)")
+				print("request: \(request)")
 				print("queryStringDictionary: \(queryStringDictionary)")
 			}
 			
@@ -114,14 +114,8 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	@objc func helloWorld() {
 	
 		// play system alet sound
-		let synthesizer = AVSpeechSynthesizer()
-		let utterance = AVSpeechUtterance(string: queryStringDictionary["message"] ?? "")
-		
-		if queryStringDictionary.keys.contains("speed") == true {
-			utterance.rate = (queryStringDictionary["speed"]! as NSString).floatValue
-		}
-		
-		synthesizer.speak(utterance)
+        let s = Speaker()
+        s.speak(msg: queryStringDictionary["message"] ?? "")
 		
 		// process nativeCall successCallback function and send data to web UI
 		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"

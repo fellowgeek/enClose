@@ -1,101 +1,110 @@
-http://enclose.erfan.me
+# What is enClose?
+enClose is an HTML5 wrapper tailored for iOS and OSX, enriching your development experience. With enClose, you can harness familiar tools to build native Swift applications.
 
-# WHAT IS IT?
-enClose is a HTML5 wrapper for iOS and OSX. enClose comes with all the tools you know and love like jQuery and FastClick but you don't have to use any of them if you don't want to.
+[FastClick](https://github.com/ftlabs/fastclick) empowers your HTML5 applications to match the responsiveness of native apps on iOS, offering a seamless user experience.
 
-FastClick makes your HTML5 apps work and feel as fast as native apps in terms of responsiveness on iOS.
+Moreover, enClose facilitates the seamless interaction between native functions and JavaScript within your application. It allows you to invoke native functions from your JavaScript app and JavaScript functions from the native components of your application.
 
-enClose lets you call native functions from your JavaScript app and call JavasSrcipt functions from your native part of the app.
+# Why is it Worth Your Attention?
+Unlike PhoneGap, which can be limiting and overly intricate, enClose offers a refreshing alternative. It doesn't confine you to a predefined set of functions via an API; instead, it enables you to tap into the full potential of the iOS and OSX platforms.
 
-# WHY SHOULD I CARE?
-PhoneGap is limited, over complicated, It only gives you a set of function through the API, why not take advantage of everything that iOS or OSX platform can offer.
+enClose is designed to be remarkably straightforward and flexible. You're in control, with the freedom to structure your code as you see fit. In fact, the entire framework consists of just a few blocks of code – that's simplicity at its finest.
 
-enClose is super simple and flexible, you have the freedom to everything the way you want, the whole thing is about 40 lines of code, really!
+# How Does it Function?
+You might be intrigued by the underlying mechanics of enClose. Here's how it operates: When a native function is triggered from JavaScript, enClose leverages WebKit messageHandlers to dispatch a message to WKScriptMessageHandler on the native side, facilitating subsequent processing. The code then searches for the existence of the native method. If the method is found, it is executed, and subsequently, the JavaScript success and error callbacks are invoked.
 
-# HOW DOES IT WORK?
-Glad you asked, when a native function is called through a special URL from the JavaScript, the WKWebView on the native side catches this URL and calls the correct method on the native side. to call a JavaScript function from native we simply use the WKWebView method "evaluateJavaScript".
-
-This is how a native function is called from JavaScript, in this example:
+Here's an example of calling a native function from JavaScript:
 
 <pre>
-jQuery.enClose([settings])
+enClose(options)
 
-settings: (PlainObject)
+options: (PlainObject)
 
-	nativeCall: (String)			(name of the native (Objective-C) method)
-	data: (PlainObject)				(data to be sent to the native (Objective-C) method)
+	nativeCall: (String)			(name of the native (Swift) method)
+	data: (PlainObject)                     (data to be sent to the native (Swift) method)
 	successCallback: (String)		(name of the JavaScript callback function to be called on success)
 	errorCallback: (String)			(name of the JavaScript callback function to be called on error)
 
-$.enClose({
-	nativeCall: 'helloWorld',
-	data: {message: 'Hello, from the other side.', speed: 0.5},
-	successCallback: 'successCallbackFunction'
+enClose({
+    nativeCall: 'helloWorld',
+    data: {
+        message: 'Hello, from the other side.'
+    },
+    successCallback: 'successCallbackFunction'
 });
 </pre>
 
-Or if you don't want to use jQuery or JavaScript you can call native methods via URL, see example below:
+Or if you don't want to use JavaScript you can call native methods via URL, see example below:
 
 <pre>
-&lt;a href="ios:nativeCall?parameters"&gt;Link Label&lt;/a&gt;
+// Invoke the native method using the WebView's messageHandlers.
+webkit.messageHandlers.enClose.postMessage(enCloseURI);
 
-	nativeCall: (String)			(name of the native (Objective-C) method)
-	parameters: (String)			(url parameters to be sent to the native (Objective-C) method)
+enCloseURI: 'ios:nativeCall?parameters'
 
-&lt;a href="ios:helloWorld?message=Hello, from the other side.&speed=0.5&successCallback=successCallbackFunction"&gt;Hello World&lt;/a&gt;
+nativeCall: (String)            (name of the native (Swift) method)
+parameters: (String)		(url parameters to be sent to the native (Swift) method)
 
 </pre>
 
-That is all. Below you can see pretty much the whole source code in less than 40 lines of code.
+That is all. Below you can see pretty much the whole source code at the heart of enClose in a block of code.
 
-<pre>
-if ([requestURL hasPrefix:@"ios:"]) {
-    
-    // call the native method if exists
-    NSRange range;
-    range = NSMakeRange(0, [requestURL rangeOfString:@"?"].location);
-    NSString *iosMethod = [requestURL substringWithRange:range];
-    iosMethod = [iosMethod stringByReplacingOccurrencesOfString:@"ios:" withString: @""];
-    
-    range = NSMakeRange(([requestURL rangeOfString:@"?"].location + 1), ([requestURL length] - [requestURL rangeOfString:@"?"].location) - 1);
-    iosParameters = [requestURL substringWithRange:range];
-    
-    [queryStringDictionary removeAllObjects];
-    NSArray *urlComponents = [iosParameters componentsSeparatedByString:@"&"];
-    for(NSString *keyValuePair in urlComponents) {
-        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-        [queryStringDictionary setValue:value forKey:key];
+```
+// Check if the request URL starts with "ios:"
+if request.hasPrefix("ios:") {  
+    // Extract and process the method name and parameters from the URL
+    var range: NSRange  // Declare a variable to hold a range
+
+    // Find the range from the start of the string to the first "?" character
+    range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
+
+    // Extract the method name from the URL and remove "ios:"
+    var iosMethod = (request as NSString).substring(with: range)
+    iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
+
+    // Find the range from the character after the first "?" to the end of the string
+    range = NSRange(location: Int((request as NSString).range(of: "?").location) + 1, length: (request.count - Int((request as NSString).range(of: "?").location)) - 1)
+    let iosParameters = (request as NSString).substring(with: range)
+
+    // Initialize an empty dictionary to store key-value pairs
+    var queryStringDictionary = [String: String]()
+
+    // Split the parameters into key-value pairs
+    let urlComponents = iosParameters.components(separatedBy: "&")
+    for keyValuePair in urlComponents {
+        let pairComponents = keyValuePair.components(separatedBy: "=")
+        let key = pairComponents.first?.removingPercentEncoding
+        let value = pairComponents.last?.removingPercentEncoding
+
+        // Add key-value pairs to the dictionary
+        queryStringDictionary[key ?? ""] = value
     }
-    
-    SEL selector = NSSelectorFromString(iosMethod);
-    if([self respondsToSelector: selector] == YES) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:selector];
-#pragma clang diagnostic pop
+
+    // Convert the method name into a selector
+    let selector = NSSelectorFromString(iosMethod)
+
+    // Check if the current object responds to the selector
+    if responds(to: selector) {
+        // If it does, perform the method
+        perform(selector)
     }
-    
-    if(debugMode == YES) {
-        NSLog(@"requestURL: %@", requestURL);
-        NSLog(@"queryStringDictionary: %@", queryStringDictionary);
+
+    // Check if debug mode is enabled
+    if debugMode {
+        // Print the original request URL and the queryStringDictionary
+        print("request: \(request)")
+        print("queryStringDictionary: \(queryStringDictionary)")
     }
-</pre>
+}
+```
 
 # WHAT ABOUT ANDROID?
-If you are developing on Android platform, download enClose from here: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+If you are developing on Android platform, download enClose from [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ): 
 
 
-# GIVE ME THE CODE
-Go ahead and click on the link below and the code is yours. OSX version coming soon. in the meantime you can turn this into the OSX version yourself.
-
-https://github.com/fellowgeek/enClose/archive/2.0-iOS-Objective-C.zip
+# Getting Started
+To get started, just clone the repository and open the enClose project in Xcode. Currently, enClose offers two distinct versions for both iOS and MacOS.
 
 # SUPPORT ME?
-Goto https://cash.me/$fellowgeek
+If you'd like to support my work, you can visit my Cash App at https://cash.me/$fellowgeek. Your support is greatly appreciated!
 
-# LICENSE
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
