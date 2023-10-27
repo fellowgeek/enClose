@@ -1,47 +1,31 @@
-/*
- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
- GLOBAL VARIABLES
- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-*/
+// Global variables
 var debugMode = true;
 
-/*
- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
- ATTACH FAST CLICK
- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-*/
+// Startup
+document.addEventListener('DOMContentLoaded', function () {
 
-$(function() {
 	FastClick.attach(document.body);
-});
-
-
-/*
----- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-STARTUP
----- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-*/
-$(document).ready(function() {
 
 	console.log('Ready.');
 
-    $('.buttonTestenClose').click(function() {
-
-		$.enClose({
+	let myButton = document.querySelector('.buttonTestenClose');
+	myButton.addEventListener('click', function() {
+		enClose({
 			nativeCall: 'helloWorld',
 			data: {
-				  message: 'Oh, yeah! You gotta get schwifty. You gotta get schwifty in here.'
+		  		message: 'Oh, yeah! You gotta get schwifty. You gotta get schwifty in here.'
 			},
 			successCallback: 'successCallbackFunction'
 		});
-
     });
 
 });
 
+// Call back for success
 function successCallbackFunction(response) {
 
 	console.log(response);
-	$('.response').html(response);
+	let myResponse = document.querySelector('.response');
+	myResponse.innerHTML = response;
 
 }

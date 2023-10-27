@@ -2,20 +2,26 @@
 //  ViewController.swift
 //  enClose-MacOS
 //
-//  Created by Erfan Reed on 9/16/18.
+//  Created by Erfan Reed
 //
 
+// Import necessary libraries
 import Cocoa
 import WebKit
 
+// Define a ViewController class that inherits from NSViewController
 class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
 
+    // A dictionary to store query string parameters from JavaScript messages
 	var queryStringDictionary = [String: String]()
-	var iosParameters = ""
-	let debugMode = true
-	
+    // A string to store parameters received from JavaScript messages
+    var iosParameters = ""
+    // A boolean flag for enabling debug mode
+    let debugMode = true
+    // Declare a WKWebView property
 	var webView: WKWebView!
-	
+
+    // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
 		
 		let contentController = WKUserContentController()
@@ -34,6 +40,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
         
 	}
 	
+    // Override the viewDidLoad() function to load the initial web page
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -45,44 +52,57 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		
 	}
 	
-	// disable user text selection
+    // Function to disable user text selection via JavaScript
 	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 		let javascriptStyle = "var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}'; var head = document.head || document.getElementsByTagName('head')[0]; var style = document.createElement('style'); style.type = 'text/css'; style.appendChild(document.createTextNode(css)); head.appendChild(style);"
 		webView.evaluateJavaScript(javascriptStyle, completionHandler: nil)
 	}
 	
-	// enclose
+    // Function to handle messages received from JavaScript
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 		
+        // Check if the message body is a string
 		guard let request = message.body as? String else { return }
-		
+
+        // Check if the request starts with "ios:"
 		if(request.hasPrefix("ios:") == true) {
 			
-			// call the native method if exists
+            // Extract and process the method name and parameters from the request
 			var range: NSRange
+            // Find the range from the start of the string to the first "?" character
 			range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
+            // Extract the method name from the request and remove "ios:"
 			var iosMethod = (request as NSString).substring(with: range)
 			iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
-			
+            // Find the range from the character after the first "?" to the end of the string
 			range = NSRange(location: Int((request as NSString).range(of: "?").location) + 1, length: (request.count - Int((request as NSString).range(of: "?").location)) - 1)
 			iosParameters = (request as NSString).substring(with: range)
 			
+            // Initialize an empty dictionary to store key-value pairs
 			queryStringDictionary.removeAll()
+            
+            // Split the parameters into key-value pairs
 			let urlComponents = iosParameters.components(separatedBy: "&")
 			for keyValuePair: String in urlComponents {
 				let pairComponents = keyValuePair.components(separatedBy: "=")
 				let key = pairComponents.first?.removingPercentEncoding
 				let value = pairComponents.last?.removingPercentEncoding
+                // Add key-value pairs to the dictionary
 				queryStringDictionary[key ?? ""] = value
 			}
 			
+            // Convert the method name into a selector
 			let selector = NSSelectorFromString(iosMethod)
+            // Check if the current object responds to the selector
 			if(responds(to: selector) == true) {
+                // If it does, perform the method
 				perform(selector)
 			}
 			
+            // Check if debug mode is enabled
 			if(debugMode == true) {
 				print("request: \(request)")
+                // Print the original request and the queryStringDictionary
 				print("queryStringDictionary: \(queryStringDictionary)")
 			}
 			
@@ -90,24 +110,13 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		
 	}
 	
-	/*
-	--------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
-	system
-	--------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
-	*/
-
 	override var representedObject: Any? {
 		didSet {
 		// Update the view, if already loaded.
 		}
 	}
-
-	/*
-	--------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
-	helloWorld
-	--------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
-	*/
 	
+    // A custom "Hello, World!" function which is called from Javascript, it speaks a message
 	let helloWorldSelector = #selector(helloWorld)
 	@objc func helloWorld() {
 		

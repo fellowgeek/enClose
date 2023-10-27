@@ -50,15 +50,15 @@ parameters: (String)		(url parameters to be sent to the native (Swift) method)
 That is all. Below you can see pretty much the whole source code at the heart of enClose in a block of code.
 
 ```
-// Check if the request URL starts with "ios:"
+// Check if the request starts with "ios:"
 if request.hasPrefix("ios:") {  
-    // Extract and process the method name and parameters from the URL
+    // Extract and process the method name and parameters from the request
     var range: NSRange  // Declare a variable to hold a range
 
     // Find the range from the start of the string to the first "?" character
     range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
 
-    // Extract the method name from the URL and remove "ios:"
+    // Extract the method name from the request and remove "ios:"
     var iosMethod = (request as NSString).substring(with: range)
     iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
 
@@ -91,7 +91,7 @@ if request.hasPrefix("ios:") {
 
     // Check if debug mode is enabled
     if debugMode {
-        // Print the original request URL and the queryStringDictionary
+        // Print the original request and the queryStringDictionary
         print("request: \(request)")
         print("queryStringDictionary: \(queryStringDictionary)")
     }
