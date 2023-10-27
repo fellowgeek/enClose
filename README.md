@@ -100,13 +100,13 @@ if request.hasPrefix("ios:") {
 }
 ```
 
-# WHAT ABOUT ANDROID?
+# What about Android?
 If you are developing on Android platform, download enClose from [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ): 
 
 
 # Getting Started
 To get started, just clone the repository and open the enClose project in Xcode. Currently, enClose offers two distinct versions for both iOS and MacOS.
 
-# SUPPORT ME?
+# Support
 If you'd like to support my work, you can visit my Cash App at https://cash.me/$fellowgeek. Your support is greatly appreciated!
 
