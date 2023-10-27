@@ -1,5 +1,6 @@
 # What is enClose?
 ![Logo](iOS-Swift/www/assets/images/enCloseLogo.png)
+
 enClose is an HTML5 wrapper tailored for iOS and OSX, enriching your development experience. With enClose, you can harness familiar tools to build native Swift applications.
 
 [FastClick](https://github.com/ftlabs/fastclick) empowers your HTML5 applications to match the responsiveness of native apps on iOS, offering a seamless user experience.
