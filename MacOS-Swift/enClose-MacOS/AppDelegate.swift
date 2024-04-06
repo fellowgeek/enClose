@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  enClose-MacOS
 //
-//  Created by Erfan Reed on 9/16/18.
+//  Created by Erfan Reed
 //
 
 import Cocoa
@@ -22,4 +22,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 }
-

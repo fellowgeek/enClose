@@ -118,7 +118,6 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	}
 
     // A custom "Hello, World!" function which is called from Javascript, it speaks a message
-	let helloWorldSelector = #selector(helloWorld)
 	@objc func helloWorld() {
 
 		let synthesizer = NSSpeechSynthesizer()

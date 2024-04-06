@@ -21,7 +21,9 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	let debugMode = true
     // Declare a WKWebView property
 	var webView: WKWebView!
-
+    // Declare a AVSpeechSynthesizer property
+    let synthesizer = AVSpeechSynthesizer()
+    
     // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
 
@@ -131,12 +133,16 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	}
 
     // A custom "Hello, World!" function which is called from Javascript, it plays a system sound when invoked
-	let helloWorldSelector = #selector(helloWorld)
 	@objc func helloWorld() {
 
-		// play a system sound
-	    AudioServicesPlaySystemSound(1005)
+        let utterance = AVSpeechUtterance(string: queryStringDictionary["message"] ?? "")
+        let voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.volume = 1
+        utterance.voice = voice
 
+        // Tell the synthesizer to speak the utterance.
+        synthesizer.speak(utterance)
+        
 		// process nativeCall successCallback function and send data to web UI
 		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
 
