@@ -19,6 +19,8 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	var iosParameters = ""
     // A boolean flag for enabling debug mode
 	let debugMode = true
+    // Declare if external URLs should open in Safari
+    let openExternalURLsInSafari = true;
     // Declare a WKWebView property
 	var webView: WKWebView!
     // Declare a AVSpeechSynthesizer property
@@ -62,12 +64,26 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
 	}
 
-
     // Function to disable user text selection via JavaScript
 	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-		let javascriptStyle = "var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}'; var head = document.head || document.getElementsByTagName('head')[0]; var style = document.createElement('style'); style.type = 'text/css'; style.appendChild(document.createTextNode(css)); head.appendChild(style);"
-		webView.evaluateJavaScript(javascriptStyle, completionHandler: nil)
-	}
+        let javaScriptSecrets = """
+            const __DEVICE_NAME__ = '\(UIDevice.current.name)';
+            const __DEVICE_MODEL__ = '\(UIDevice.current.model)';
+            const __DEVICE_SYSTEM_NAME__ = '\(UIDevice.current.systemName)';
+            const __DEVICE_SYSTEM_VERSION__ = '\(UIDevice.current.systemVersion)';
+            """
+        webView.evaluateJavaScript(javaScriptSecrets, completionHandler: nil)
+        
+        let javascriptStyle = """
+            var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}';
+            var head = document.head || document.getElementsByTagName('head')[0];
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(css));
+            head.appendChild(style);
+            """
+        webView.evaluateJavaScript(javascriptStyle, completionHandler: nil)
+    }
 
     // Function to handle messages received from JavaScript
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -116,10 +132,23 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 				print("request: \(request)")
 				print("queryStringDictionary: \(queryStringDictionary)")
 			}
-
 		}
-
 	}
+
+    // Handle opening of the external URLs
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+
+        if openExternalURLsInSafari && (url.scheme == "http" || url.scheme == "https") {
+            decisionHandler(.cancel)
+            UIApplication.shared.open(url)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
 
     // Function to handle memory warnings
 	override func didReceiveMemoryWarning() {
