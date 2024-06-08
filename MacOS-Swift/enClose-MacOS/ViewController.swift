@@ -18,6 +18,8 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
     var iosParameters = ""
     // A boolean flag for enabling debug mode
     let debugMode = true
+	// Declare if external URLs should open in Safari
+    let openExternalURLsInSafari = true;
     // Declare a WKWebView property
 	var webView: WKWebView!
 
@@ -106,10 +108,23 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
                 // Print the original request and the queryStringDictionary
 				print("queryStringDictionary: \(queryStringDictionary)")
 			}
-
 		}
-
 	}
+
+    // Handle opening of the external URLs
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+
+        if openExternalURLsInSafari && (url.scheme == "http" || url.scheme == "https") {
+            decisionHandler(.cancel)
+            UIApplication.shared.open(url)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
 
 	override var representedObject: Any? {
 		didSet {

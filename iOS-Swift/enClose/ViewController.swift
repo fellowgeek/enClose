@@ -25,7 +25,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	var webView: WKWebView!
     // Declare a AVSpeechSynthesizer property
     let synthesizer = AVSpeechSynthesizer()
-    
+
     // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
 
@@ -73,7 +73,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
             const __DEVICE_SYSTEM_VERSION__ = '\(UIDevice.current.systemVersion)';
             """
         webView.evaluateJavaScript(javaScriptSecrets, completionHandler: nil)
-        
+
         let javascriptStyle = """
             var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}';
             var head = document.head || document.getElementsByTagName('head')[0];
@@ -156,6 +156,11 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		// Dispose of any resources that can be recreated.
 	}
 
+    // Function to auto hide home indicator bar
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
+
     // Function to specify whether the status bar is hidden
 	override var prefersStatusBarHidden: Bool {
 		return true
@@ -163,7 +168,6 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
     // A custom "Hello, World!" function which is called from Javascript, it plays a system sound when invoked
 	@objc func helloWorld() {
-
         let utterance = AVSpeechUtterance(string: queryStringDictionary["message"] ?? "")
         let voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.volume = 1
@@ -171,7 +175,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
         // Tell the synthesizer to speak the utterance.
         synthesizer.speak(utterance)
-        
+
 		// process nativeCall successCallback function and send data to web UI
 		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
 
@@ -180,7 +184,6 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 			javaScript = "\(successCallback)('\(successResponse)');"
 		}
 		webView.evaluateJavaScript(javaScript, completionHandler: nil)
-
 	}
 
 }
