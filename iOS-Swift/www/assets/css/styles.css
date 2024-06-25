@@ -7,7 +7,7 @@ GLOBAL STYLES
 html, body {
     margin: 0;
     padding: 0;
-    background: #f8941d;
+    background: #fa6402;
 	font-family: monospace;
 	color: #fff;
 }
@@ -17,19 +17,26 @@ h1 {
 	font-size: 28px;
 }
 
+a, a:visited, a:hover, a:active {
+	color: antiquewhite;
+}
+
 /*
 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 THEME / UI
 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 */
 
+.row {
+	padding: 15px;
+}
+
 .logo {
-	margin: 15px 0px 15px 0px;
 	max-width: 125px;
 }
 
-.row {
-	padding: 15px;
+.container {
+	margin: 15px;
 }
 
 .section {
@@ -42,12 +49,15 @@ THEME / UI
 .response {
 	padding: 10px 5px;
 	line-height: 25px;
+	border-radius: 5px;
 	background: #ffffee;
 	color: #333;
 }
 
 .btn-danger {
-	padding: 10px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	padding: 15px;
+	border-radius: 10px;
 	background: #cf0000;
 }
 

@@ -120,7 +120,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
         if openExternalURLsInSafari && (url.scheme == "http" || url.scheme == "https") {
             decisionHandler(.cancel)
-            UIApplication.shared.open(url)
+            NSWorkspace.shared.open(url)
         } else {
             decisionHandler(.allow)
         }

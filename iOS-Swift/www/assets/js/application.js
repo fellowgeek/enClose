@@ -4,8 +4,6 @@ var debugMode = true;
 // Startup
 document.addEventListener('DOMContentLoaded', function () {
 
-	FastClick.attach(document.body);
-
 	console.log('Ready.');
 
 	let myButton = document.querySelector('.buttonTestenClose');

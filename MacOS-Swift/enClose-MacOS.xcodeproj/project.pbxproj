@@ -59,8 +59,8 @@
 				E2BE5D6B214F474400F0FC65 /* enClose-MacOS.entitlements */,
 				E29E73CC214F464100334050 /* AppDelegate.swift */,
 				E29E73CE214F464100334050 /* ViewController.swift */,
-				E29E73D0214F464200334050 /* Assets.xcassets */,
 				E29E73D2214F464200334050 /* Main.storyboard */,
+				E29E73D0214F464200334050 /* Assets.xcassets */,
 				E29E73D5214F464200334050 /* Info.plist */,
 			);
 			path = "enClose-MacOS";
@@ -94,7 +94,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					E29E73C8214F464100334050 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -166,6 +166,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -229,6 +230,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -286,11 +288,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "enClose-MacOS/enClose-MacOS.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 7D4344PZ7V;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "enClose-MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = enClose;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -298,9 +300,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2;
-				PRODUCT_BUNDLE_IDENTIFIER = "fellowgeek.enClose-MacOS";
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -310,11 +313,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "enClose-MacOS/enClose-MacOS.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 7D4344PZ7V;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "enClose-MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = enClose;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -322,9 +325,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2;
-				PRODUCT_BUNDLE_IDENTIFIER = "fellowgeek.enClose-MacOS";
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
