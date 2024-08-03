@@ -16,7 +16,7 @@ function enClose(options = {
     }
 
     // Construct the URI to invoke the native method with callbacks.
-    var enCloseURI = 'ios:' + options.nativeCall + '?' + parameters;
+    var enCloseURI = 'ios:' + options.nativeCall + ':?' + parameters;
     if (options.successCallback) {
         enCloseURI += '&successCallback=' + options.successCallback;
     }

@@ -35,6 +35,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		webView = WKWebView(frame: .zero, configuration: webConfiguration)
 		webView.uiDelegate = self
 		webView.navigationDelegate = self
+        webView.underPageBackgroundColor = .black
         webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         if #available(macOS 13.3, iOS 16.4, tvOS 16.4, *) {
             webView.isInspectable = true
@@ -99,9 +100,10 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
             // Check if the current object responds to the selector
 			if(responds(to: selector) == true) {
                 // If it does, perform the method
-				perform(selector)
-			}
-
+                perform(selector, with: queryStringDictionary)
+            } else {
+                print("Unable to find @objc method for selector: \(selector)")
+            }
             // Check if debug mode is enabled
 			if(debugMode == true) {
 				print("request: \(request)")
@@ -126,6 +128,14 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
         }
     }
 
+    // This function evaluates javascript on the main webview
+    func evaluateJavascript(javaScript: String) {
+        if (debugMode == true) {
+            print("Evaluating Javascript: \(javaScript)")
+        }
+        webView.evaluateJavaScript(javaScript, completionHandler: nil)
+    }
+    
 	override var representedObject: Any? {
 		didSet {
 		// Update the view, if already loaded.
@@ -133,20 +143,19 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	}
 
     // A custom "Hello, World!" function which is called from Javascript, it speaks a message
-	@objc func helloWorld() {
+	@objc func helloWorld(_ params: [String: String]) {
 
 		let synthesizer = NSSpeechSynthesizer()
-		synthesizer.startSpeaking(queryStringDictionary["message"] ?? "")
+		synthesizer.startSpeaking(params["message"] ?? "")
 
 		// process nativeCall successCallback function and send data to web UI
 		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
 
 		var javaScript: String = ""
-		if let successCallback = queryStringDictionary["successCallback"] {
+		if let successCallback = params["successCallback"] {
 			javaScript = "\(successCallback)('\(successResponse)');"
 		}
-		webView.evaluateJavaScript(javaScript, completionHandler: nil)
-
+        evaluateJavascript(javaScript: javaScript)
 	}
 
 }

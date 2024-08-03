@@ -39,6 +39,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		webView.uiDelegate = self
 		webView.navigationDelegate = self
 		webView.scrollView.bounces = false
+        webView.backgroundColor = .black
         webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 		// Enable the web inspector for Safari when in debug mode iOS 16.4+
         if #available(iOS 16.4, *) {
@@ -123,9 +124,10 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
             // Check if the current object responds to the selector
 			if(responds(to: selector) == true) {
                 // If it does, perform the method
-				perform(selector)
-			}
-
+                perform(selector, with: queryStringDictionary)
+            } else {
+                print("Unable to find @objc method for selector: \(selector)")
+            }
             // Check if debug mode is enabled
 			if(debugMode == true) {
                 // Print the original request and the queryStringDictionary
@@ -149,6 +151,14 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
             decisionHandler(.allow)
         }
     }
+    
+    // This function evaluates javascript on the main webview
+    func evaluateJavascript(javaScript: String) {
+        if (debugMode == true) {
+            print("Evaluating Javascript: \(javaScript)")
+        }
+        webView.evaluateJavaScript(javaScript, completionHandler: nil)
+    }
 
     // Function to handle memory warnings
 	override func didReceiveMemoryWarning() {
@@ -167,8 +177,8 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 	}
 
     // A custom "Hello, World!" function which is called from Javascript, it plays a system sound when invoked
-	@objc func helloWorld() {
-        let utterance = AVSpeechUtterance(string: queryStringDictionary["message"] ?? "")
+	@objc func helloWorld(_ params: [String: String]) {
+        let utterance = AVSpeechUtterance(string: params["message"] ?? "")
         let voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.volume = 1
         utterance.voice = voice
@@ -180,10 +190,10 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
 
 		var javaScript: String = ""
-		if let successCallback = queryStringDictionary["successCallback"] {
+		if let successCallback = params["successCallback"] {
 			javaScript = "\(successCallback)('\(successResponse)');"
 		}
-		webView.evaluateJavaScript(javaScript, completionHandler: nil)
+        evaluateJavascript(javaScript: javaScript)
 	}
 
 }
