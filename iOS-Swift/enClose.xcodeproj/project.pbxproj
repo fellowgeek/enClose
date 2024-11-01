@@ -59,8 +59,8 @@
 			children = (
 				9622CA15214867C4000FEAF1 /* AppDelegate.swift */,
 				9622CA17214867C4000FEAF1 /* ViewController.swift */,
-				9622CA19214867C4000FEAF1 /* Main.storyboard */,
 				9622CA1E214867C6000FEAF1 /* LaunchScreen.storyboard */,
+				9622CA19214867C4000FEAF1 /* Main.storyboard */,
 				9622CA1C214867C6000FEAF1 /* Assets.xcassets */,
 				9622CA21214867C6000FEAF1 /* Info.plist */,
 			);
@@ -300,7 +300,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -322,7 +322,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

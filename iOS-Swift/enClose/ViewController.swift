@@ -7,8 +7,8 @@
 
 // Import necessary libraries
 import UIKit
-import WebKit
 import AVFoundation
+@preconcurrency import WebKit
 
 // Define a ViewController class that inherits from UIViewController
 class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
@@ -28,7 +28,8 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
     // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
-
+        super.loadView()
+        
 		let contentController = WKUserContentController()
 		contentController.add(self, name: "enClose")
 
