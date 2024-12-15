@@ -7,7 +7,7 @@
 
 // Import necessary libraries
 import Cocoa
-import WebKit
+@preconcurrency import WebKit
 
 // Define a ViewController class that inherits from NSViewController
 class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
