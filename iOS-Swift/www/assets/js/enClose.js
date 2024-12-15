@@ -5,7 +5,6 @@ function enClose(options = {
     successCallback: null,   // A JavaScript callback function to handle success.
     errorCallback: null      // A JavaScript callback function to handle errors.
 }) {
-
     // Construct query parameters for the native method call.
     var parameters = '';
     for (var key in options.data) {
@@ -25,7 +24,7 @@ function enClose(options = {
     }
 
     // Check if debug mode is enabled, and log relevant information.
-    if (typeof debugMode !== 'undefined' && debugMode == true) {
+    if (typeof __DEBUG_MODE__ !== 'undefined' && __DEBUG_MODE__ == true) {
         console.log('%c> enClose options:', 'font-weight: bold; color: #000;');
         console.log(`%c${JSON.stringify(options, undefined, 2)}`, 'color: #222; background-color: #ffd; font-family: menlo, consolas, monospace');
     }
@@ -35,7 +34,20 @@ function enClose(options = {
         webkit.messageHandlers.enClose.postMessage(enCloseURI);
     } catch (err) {
         // Handle the case when the native code cannot be reached.
-        if (debugMode == true)
+        if (typeof __DEBUG_MODE__ !== 'undefined' && __DEBUG_MODE__ == true) {
             console.error('Error: Unable to communicate with native code.');
+        }
     }
+}
+
+// Dispatch a custom enClose event
+function enCloseEvent(data) {
+    const event = new CustomEvent(
+        "enclose:event",
+        {
+            detail: data,
+            bubbles: true
+        }
+    );
+    document.dispatchEvent(event);
 }

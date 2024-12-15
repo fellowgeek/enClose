@@ -56,10 +56,10 @@
 		E29E73CB214F464100334050 /* enClose-MacOS */ = {
 			isa = PBXGroup;
 			children = (
+				E2BE5D6B214F474400F0FC65 /* enClose-MacOS.entitlements */,
 				E29E73CC214F464100334050 /* AppDelegate.swift */,
 				E29E73CE214F464100334050 /* ViewController.swift */,
 				E29E73D2214F464200334050 /* Main.storyboard */,
-				E2BE5D6B214F474400F0FC65 /* enClose-MacOS.entitlements */,
 				E29E73D0214F464200334050 /* Assets.xcassets */,
 				E29E73D5214F464200334050 /* Info.plist */,
 			);
@@ -299,8 +299,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 2.3;
+				MACOSX_DEPLOYMENT_TARGET = 14;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -324,8 +324,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 2.3;
+				MACOSX_DEPLOYMENT_TARGET = 14;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  enClose
 //
 //  Created by Erfan Reed
@@ -10,22 +10,39 @@ import UIKit
 import AVFoundation
 @preconcurrency import WebKit
 
-// Define a ViewController class that inherits from UIViewController
-class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
+enum TargetWebView {
+    case main
+    case external
+}
 
-    // A dictionary to store query string parameters from JavaScript messages
-	var queryStringDictionary = [String: String]()
-    // A string to store parameters received from JavaScript messages
-	var iosParameters = ""
-    // A boolean flag for enabling debug mode
-	let debugMode = true
+// Define a ViewController class that inherits from UIViewController
+class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
+
+    /* A boolean flag for enabling debug mode
+       
+       IMPORTANT: set to false for production or users can inspect your web views.
+     
+    */
+    static let debugMode = true
+    
+    // Declare the first webpage to be loaded
+    var index: String = "index"
     // Declare if external URLs should open in Safari
     let openExternalURLsInSafari = true;
     // Declare a WKWebView property
 	var webView: WKWebView!
-    // Declare a AVSpeechSynthesizer property
-    let synthesizer = AVSpeechSynthesizer()
 
+    // Custom initializer to override the default value if needed
+    init(index: String = "index") {
+       self.index = index
+       super.init(nibName: nil, bundle: nil)
+    }
+    
+    // Required initializer for decoding
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
         super.loadView()
@@ -44,7 +61,7 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
         webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 		// Enable the web inspector for Safari when in debug mode iOS 16.4+
         if #available(iOS 16.4, *) {
-            if (debugMode == true) {
+            if (MainViewController.debugMode == true) {
                 webView.isInspectable = true
             }
         } else {
@@ -57,24 +74,29 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
     // Override the viewDidLoad() function to load the initial web page
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "www") {
+        
+        if let url = Bundle.main.url(forResource: self.index, withExtension: "html", subdirectory: "www") {
 			webView.loadFileURL(url, allowingReadAccessTo: url)
 			let request = URLRequest(url: url)
 			webView.load(request)
 		}
 
+        // Add observers for external display notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(handleExternalDisplayConnected(_:)), name: .externalDisplayConnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleExternalDisplayDisconnected(_:)), name: .externalDisplayDisconnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleExternalDisplayWebViewFinishedLoading(_:)), name: .externalDisplayWebViewFinishedLoading, object: nil)
 	}
 
     // Function to disable user text selection via JavaScript
 	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let javaScriptSecrets = """
+        let javaScriptConstants = """
+            const __DEBUG_MODE__ = \(MainViewController.debugMode);
             const __DEVICE_NAME__ = '\(UIDevice.current.name)';
             const __DEVICE_MODEL__ = '\(UIDevice.current.model)';
             const __DEVICE_SYSTEM_NAME__ = '\(UIDevice.current.systemName)';
             const __DEVICE_SYSTEM_VERSION__ = '\(UIDevice.current.systemVersion)';
             """
-        webView.evaluateJavaScript(javaScriptSecrets, completionHandler: nil)
+        evaluateJavascript(javaScript: javaScriptConstants)
 
         let javascriptStyle = """
             var css = '*{-webkit-touch-callout:none;-webkit-user-select:none}';
@@ -84,11 +106,16 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
             style.appendChild(document.createTextNode(css));
             head.appendChild(style);
             """
-        webView.evaluateJavaScript(javascriptStyle, completionHandler: nil)
+        evaluateJavascript(javaScript: javascriptStyle)
     }
 
     // Function to handle messages received from JavaScript
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+
+        // A string to store parameters received from JavaScript messages
+        var iosParameters = ""
+        // A dictionary to store query string parameters from JavaScript messages
+        var queryStringDictionary = [String: String]()
 
         // Check if the message body is a string
 		guard let request = message.body as? String else { return }
@@ -120,6 +147,13 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 				queryStringDictionary[key ?? ""] = value
 			}
 
+            // Check if debug mode is enabled and print information
+            if(MainViewController.debugMode == true) {
+                // Print the original request and the queryStringDictionary
+                print("Attempting to call native method: \(iosMethod)")
+                print(String(data: try! JSONSerialization.data(withJSONObject: queryStringDictionary, options: .prettyPrinted), encoding: .utf8)!)
+            }
+            
             // Convert the method name into a selector
 			let selector = NSSelectorFromString(iosMethod)
             // Check if the current object responds to the selector
@@ -129,12 +163,6 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
             } else {
                 print("Unable to find @objc method for selector: \(selector)")
             }
-            // Check if debug mode is enabled
-			if(debugMode == true) {
-                // Print the original request and the queryStringDictionary
-				print("request: \(request)")
-				print("queryStringDictionary: \(queryStringDictionary)")
-			}
 		}
 	}
 
@@ -154,11 +182,59 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
     }
     
     // This function evaluates javascript on the main webview
-    func evaluateJavascript(javaScript: String) {
-        if (debugMode == true) {
-            print("Evaluating Javascript: \(javaScript)")
+    func evaluateJavascript(javaScript: String, target: TargetWebView = .main) {
+        // Execute javascript on the main web view
+        if (target == .main) {
+            if (MainViewController.debugMode == true) {
+                print("Evaluating Javascript (main):\n>_ \(javaScript)")
+            }
+            webView.evaluateJavaScript(javaScript, completionHandler: nil)
         }
-        webView.evaluateJavaScript(javaScript, completionHandler: nil)
+        
+        // Execute javascript on the external display web view (if available)
+        if (target == .external) {
+            guard let externalDisplayWebView = ExternalDisplayViewController.sharedWebView else { return }
+
+            if (MainViewController.debugMode == true) {
+                print("Evaluating Javascript (external display):\n>_ \(javaScript)")
+            }
+            externalDisplayWebView.evaluateJavaScript(javaScript, completionHandler: nil)
+        }
+    }
+    
+    // Function to be called when external display is connected
+    @objc func handleExternalDisplayConnected(_ notification: Notification) {
+        if (MainViewController.debugMode == true) {
+            print("External display connected.")
+        }
+        evaluateJavascript(javaScript: """
+            var __EXTERNAL_DISPLAY__ = true;
+            enCloseEvent('externalDisplayConnected');            
+            """
+        )
+    }
+
+    // Function to be called when external display is disconnected
+    @objc func handleExternalDisplayDisconnected(_ notification: Notification) {
+        if (MainViewController.debugMode == true) {
+            print("External display disconnected")
+        }
+        evaluateJavascript(javaScript: """
+            var __EXTERNAL_DISPLAY__ = false;
+            enCloseEvent('externalDisplayDisconnected');
+            """
+        )
+    }
+
+    // Function to be called when external display is disconnected
+    @objc func handleExternalDisplayWebViewFinishedLoading(_ notification: Notification) {
+        if (MainViewController.debugMode == true) {
+            print("External display web view finished loading")
+        }
+        evaluateJavascript(javaScript: """
+            enCloseEvent('externalDisplayWebViewFinishedLoading');
+            """
+        )
     }
 
     // Function to handle memory warnings
@@ -177,24 +253,29 @@ class ViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WK
 		return true
 	}
 
-    // A custom "Hello, World!" function which is called from Javascript, it plays a system sound when invoked
+    // A custom "Hello, World!" function which is called from Javascript, that demonstrates how to perform a javascript call back after perfoming native operations
 	@objc func helloWorld(_ params: [String: String]) {
-        let utterance = AVSpeechUtterance(string: params["message"] ?? "")
-        let voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.volume = 1
-        utterance.voice = voice
-
-        // Tell the synthesizer to speak the utterance.
-        synthesizer.speak(utterance)
-
+        var javaScript: String = ""
+        
+        // Play a tweet sound
+        let systemSoundID: SystemSoundID = 1016
+        AudioServicesPlaySystemSound(systemSoundID)
+        
 		// process nativeCall successCallback function and send data to web UI
-		let successResponse = "You have successfully called a native function from javascript, and you got schwifty!"
-
-		var javaScript: String = ""
+		let successResponse = "You have successfully called a native function from javascript, congratulations!"
 		if let successCallback = params["successCallback"] {
 			javaScript = "\(successCallback)('\(successResponse)');"
 		}
         evaluateJavascript(javaScript: javaScript)
 	}
+    
+    // A custom "updateExternalDisplayMessage" function which is called from Javascript, that demostrates how to update an HTML element on external display from the native code
+    @objc func updateExternalDisplayMessage(_ params: [String: String]) {
+        var javaScript: String = ""
+        
+        let message = params["message"] ?? ""
+        javaScript = "document.querySelector('.prompt').innerText = '\(message)';"
+        evaluateJavascript(javaScript: javaScript, target: .external)
+    }
 
 }
