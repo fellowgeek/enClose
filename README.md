@@ -1,5 +1,5 @@
 # What is enClose?
-![Logo](iOS-Swift/www/assets/images/enCloseLogo.png)
+![Logo](iOS-Swift/www/assets/images/logo.png)
 
 enClose is an HTML5 wrapper tailored for iOS and OSX, enriching your development experience. With enClose, you can harness familiar tools to build native Swift applications.
 
@@ -53,7 +53,7 @@ That is all. Below you can see pretty much the whole source code at the heart of
 
 ```
 // Check if the request starts with "ios:"
-if request.hasPrefix("ios:") {  
+if request.hasPrefix("ios:") {
     // Extract and process the method name and parameters from the request
     var range: NSRange  // Declare a variable to hold a range
 
@@ -101,7 +101,7 @@ if request.hasPrefix("ios:") {
 ```
 
 # What about Android?
-If you are developing on Android platform, download enClose from [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ): 
+If you are developing on Android platform, download enClose from [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ):
 
 
 # Getting Started
@@ -109,4 +109,3 @@ To get started, just clone the repository and open the enClose project in Xcode.
 
 # Support
 If you'd like to support my work, you can visit my Cash App at https://cash.me/$fellowgeek. Your support is greatly appreciated!
-
