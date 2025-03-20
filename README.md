@@ -1,111 +1,148 @@
 # What is enClose?
-![Logo](iOS-Swift/www/assets/images/logo.png)
 
-enClose is an HTML5 wrapper tailored for iOS and OSX, enriching your development experience. With enClose, you can harness familiar tools to build native Swift applications.
+<br/>
+![Logo](/images/logo.png)
 
-[FastClick](https://github.com/ftlabs/fastclick) empowers your HTML5 applications to match the responsiveness of native apps on iOS, offering a seamless user experience.
+enClose is an iOS and MacOS hybrid application development framework that enables developers to use familiar web technologies (JavaScript, HTML, and CSS) to build rich applications that perform like native apps.
 
-Moreover, enClose facilitates the seamless interaction between native functions and JavaScript within your application. It allows you to invoke native functions from your JavaScript app and JavaScript functions from the native components of your application.
+### Documentation
+You can find complete documentation and sample code here: [enClose.app](https://www.eclose.app).
 
-# Why is it Worth Your Attention?
-Unlike PhoneGap, which can be limiting and overly intricate, enClose offers a refreshing alternative. It doesn't confine you to a predefined set of functions via an API; instead, it enables you to tap into the full potential of the iOS and OSX platforms.
+### Core Concept
 
-enClose is designed to be remarkably straightforward and flexible. You're in control, with the freedom to structure your code as you see fit. In fact, the entire framework consists of just a few blocks of code – that's simplicity at its finest.
+enClose streamlines app development by allowing developers to leverage both the power of native Swift code and the flexibility of web technologies. Unlike traditional hybrid frameworks with predefined APIs or plugin systems, enClose removes restrictions, giving developers complete freedom to build any app they envision.
 
-# How Does it Function?
-You might be intrigued by the underlying mechanics of enClose. Here's how it operates: When a native function is triggered from JavaScript, enClose leverages WebKit messageHandlers to dispatch a message to WKScriptMessageHandler on the native side, facilitating subsequent processing. The code then searches for the existence of the native method. If the method is found, it is executed, and subsequently, the JavaScript success and error callbacks are invoked.
+### Key Features
 
-Here's an example of calling a native function from JavaScript:
+The framework facilitates seamless interaction between native functions and JavaScript within your application. It enables:
+- Invoking native Swift functions from your JavaScript app
+- Calling JavaScript functions from the native components of your application
 
-<pre>
-enClose(options)
+### Why Choose enClose?
 
-options: (PlainObject)
+Unlike Cordova, which can be limiting and complex, enClose offers a refreshing alternative. It doesn't confine you to a predefined set of functions via an API; instead, it enables you to tap into the full potential of the iOS and MacOS platforms.
 
-	nativeCall: (String)			(name of the native (Swift) method)
-	data: (PlainObject)                     (data to be sent to the native (Swift) method)
-	successCallback: (String)		(name of the JavaScript callback function to be called on success)
-	errorCallback: (String)			(name of the JavaScript callback function to be called on error)
+enClose is designed to be remarkably straightforward and flexible, putting you in control with the freedom to structure your code as you see fit.
 
-enClose({
-    nativeCall: 'helloWorld',
-    data: {
-        message: 'Hello, from the other side.'
-    },
-    successCallback: 'successCallbackFunction'
-});
-</pre>
+### Proven Track Record
 
-Or if you don't want to use JavaScript you can call native methods via URL, see example below:
+enClose has demonstrated its reliability and versatility through years of successful implementation across diverse environments. Since its initial development in 2016, the framework has maintained a strong presence in both enterprise settings and consumer applications:
 
-<pre>
-// Invoke the native method using the WebView's messageHandlers.
-webkit.messageHandlers.enClose.postMessage(enCloseURI);
+#### Enterprise Deployment
+The framework has powered mission-critical business applications for multiple commercial enterprises, including:
 
-enCloseURI: 'ios:nativeCall?parameters'
+* Comprehensive warehouse management systems
+* Enterprise-grade sales and CRM platforms
+* Robust point-of-sale solutions for retail environments
+* Complete restaurant management system for industrial kitchens
 
-nativeCall: (String)            (name of the native (Swift) method)
-parameters: (String)		(url parameters to be sent to the native (Swift) method)
+#### Commercial Success
+enClose has proven its commercial viability through multiple successful App Store publications. These consumer-facing applications showcase the framework's ability to deliver polished, high-performance experiences that meet Apple's stringent standards for quality and user experience.
 
-</pre>
+This extensive real-world implementation across both B2B and B2C environments demonstrates enClose's maturity, stability, and adaptability as a development framework.
 
-That is all. Below you can see pretty much the whole source code at the heart of enClose in a block of code.
+### App Showcase
 
-```
-// Check if the request starts with "ios:"
-if request.hasPrefix("ios:") {
-    // Extract and process the method name and parameters from the request
-    var range: NSRange  // Declare a variable to hold a range
-
-    // Find the range from the start of the string to the first "?" character
-    range = NSRange(location: 0, length: Int((request as NSString).range(of: "?").location))
-
-    // Extract the method name from the request and remove "ios:"
-    var iosMethod = (request as NSString).substring(with: range)
-    iosMethod = iosMethod.replacingOccurrences(of: "ios:", with: "")
-
-    // Find the range from the character after the first "?" to the end of the string
-    range = NSRange(location: Int((request as NSString).range(of: "?").location) + 1, length: (request.count - Int((request as NSString).range(of: "?").location)) - 1)
-    let iosParameters = (request as NSString).substring(with: range)
-
-    // Initialize an empty dictionary to store key-value pairs
-    var queryStringDictionary = [String: String]()
-
-    // Split the parameters into key-value pairs
-    let urlComponents = iosParameters.components(separatedBy: "&")
-    for keyValuePair in urlComponents {
-        let pairComponents = keyValuePair.components(separatedBy: "=")
-        let key = pairComponents.first?.removingPercentEncoding
-        let value = pairComponents.last?.removingPercentEncoding
-
-        // Add key-value pairs to the dictionary
-        queryStringDictionary[key ?? ""] = value
-    }
-
-    // Convert the method name into a selector
-    let selector = NSSelectorFromString(iosMethod)
-
-    // Check if the current object responds to the selector
-    if responds(to: selector) {
-        // If it does, perform the method
-        perform(selector)
-    }
-
-    // Check if debug mode is enabled
-    if debugMode {
-        // Print the original request and the queryStringDictionary
-        print("request: \(request)")
-        print("queryStringDictionary: \(queryStringDictionary)")
-    }
-}
-```
-
-# What about Android?
-If you are developing on Android platform, download enClose from [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ):
-
+<div class="app-grid">
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/dns-time/id6608972981" target="_blank">
+            <img class="app-showcase" src="/images/dnstime.png" alt="dnstime">
+        </a>
+        <div class="app-name">DNS Time</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/ssl-time/id6504959264" target="_blank">
+            <img class="app-showcase" src="/images/ssltime.png" alt="ssltime">
+        </a>
+        <div class="app-name">SSL Time</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/host-alerts/id6741502496" target="_blank">
+            <img class="app-showcase" src="/images/hostalerts.png" alt="hostalerts">
+        </a>
+        <div class="app-name">Host Alerts</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/magic-vibe/id6504504061" target="_blank">
+            <img class="app-showcase" src="/images/magicvibe.png" alt="magicvibe">
+        </a>
+        <div class="app-name">Magic Vibe</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/magic-ace/id6502392439" target="_blank">
+            <img class="app-showcase" src="/images/magicace.png" alt="magicace">
+        </a>
+        <div class="app-name">Magic Ace</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/chalkwiz/id6503723106" target="_blank">
+            <img class="app-showcase" src="/images/chalkwiz.png" alt="chalkwiz">
+        </a>
+        <div class="app-name">ChalkWiz</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/hdmeye/id6737729752" target="_blank">
+            <img class="app-showcase" src="/images/hdmeye.png" alt="hdmeye">
+        </a>
+        <div class="app-name">HDMeye</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/5-digits/id1356435234" target="_blank">
+            <img class="app-showcase" src="/images/5digits.png" alt="5digits">
+        </a>
+        <div class="app-name">5 Digits</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/lumisync/id6677019123" target="_blank">
+            <img class="app-showcase" src="/images/lumisync.png" alt="lumisync">
+        </a>
+        <div class="app-name">Lumi Sync</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/pink-pulse/id1347463371" target="_blank">
+            <img class="app-showcase" src="/images/pinkpulse.png" alt="pinkpulse">
+        </a>
+        <div class="app-name">Pink Pulse</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/link-4-online/id6739606990" target="_blank">
+            <img class="app-showcase" src="/images/link4online.png" alt="link4online">
+        </a>
+        <div class="app-name">Link 4 Online</div>
+    </div>
+    <div class="app-item">
+        <a href="https://apps.apple.com/us/app/asl-speech/id6590610689" target="_blank">
+            <img class="app-showcase" src="/images/aslspeech.png" alt="aslspeech">
+        </a>
+        <div class="app-name">ASL Speech</div>
+    </div>
+</div>
 
 # Getting Started
-To get started, just clone the repository and open the enClose project in Xcode. Currently, enClose offers two distinct versions for both iOS and MacOS.
+enClose functions as a starter project, providing a simple and straightforward installation process. You'll clone the project, customize a few key settings, and use it as the foundation for your application.
+
+## Installation Steps
+
+1. **Clone the Repository**
+   ```
+   git clone https://github.com/fellowgeek/enClose
+   ```
+
+<small>You can also download the project directly from the [releases](https://github.com/fellowgeek/enClose/releases) page on GitHub.</small>
+
+2. **Select Your Platform**
+   - Copy the **iOS-Swift** folder for iOS development
+   - Copy the **MacOS-Swift** folder for macOS development
+
+3. **Open in Xcode**
+   - Launch Xcode
+   - Open the project file in your copied folder
+
+4. **Configure Project Settings**
+   - Update the app bundle identifier
+   - Change the project name to match your application
+
+![Figure 1](/images/fig-01.png)
 
 # Support
 If you'd like to support my work, you can visit my Cash App at https://cash.me/$fellowgeek. Your support is greatly appreciated!

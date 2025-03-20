@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  enClose
 //
-//  Created by Erfan Reed on 12/12/24.
+//  Created by Erfan Reed
 //
 
 import UIKit
@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-               
+
         // Check if this is for an external display
         if windowScene.screen != UIScreen.main {
             // Setup the external display view
@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             externalWindow.rootViewController = externalViewController
             self.externalWindow = externalWindow
             externalWindow.makeKeyAndVisible()
-            
+
             // Post a notification when external display is connected
             NotificationCenter.default.post(name: .externalDisplayConnected, object: nil)
         } else {
@@ -44,13 +44,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
-        
+
         // Handle disconnection of external display if necessary
         guard let windowScene = scene as? UIWindowScene, windowScene.screen != UIScreen.main else { return }
         // Release the external window and its resources
         externalWindow?.rootViewController = nil
         externalWindow = nil
-        
+
         // Post a notification when external display is disconnected
         NotificationCenter.default.post(name: .externalDisplayDisconnected, object: nil)
     }
@@ -75,7 +75,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-    
+
 }
 
 extension Notification.Name {

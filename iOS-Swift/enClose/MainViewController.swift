@@ -19,12 +19,12 @@ enum TargetWebView {
 class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
 
     /* A boolean flag for enabling debug mode
-       
+
        IMPORTANT: set to false for production or users can inspect your web views.
-     
+
     */
     static let debugMode = true
-    
+
     // Declare the first webpage to be loaded
     var index: String = "index"
     // Declare if external URLs should open in Safari
@@ -37,16 +37,16 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
        self.index = index
        super.init(nibName: nil, bundle: nil)
     }
-    
+
     // Required initializer for decoding
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     // Override the loadView() function to create and configure the WKWebView
 	override func loadView() {
         super.loadView()
-        
+
 		let contentController = WKUserContentController()
 		contentController.add(self, name: "enClose")
 
@@ -74,7 +74,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
     // Override the viewDidLoad() function to load the initial web page
 	override func viewDidLoad() {
 		super.viewDidLoad()
-        
+
         if let url = Bundle.main.url(forResource: self.index, withExtension: "html", subdirectory: "www") {
 			webView.loadFileURL(url, allowingReadAccessTo: url)
 			let request = URLRequest(url: url)
@@ -153,7 +153,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
                 print("Attempting to call native method: \(iosMethod)")
                 print(String(data: try! JSONSerialization.data(withJSONObject: queryStringDictionary, options: .prettyPrinted), encoding: .utf8)!)
             }
-            
+
             // Convert the method name into a selector
 			let selector = NSSelectorFromString(iosMethod)
             // Check if the current object responds to the selector
@@ -180,7 +180,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
             decisionHandler(.allow)
         }
     }
-    
+
     // This function evaluates javascript on the main webview
     func evaluateJavascript(javaScript: String, target: TargetWebView = .main) {
         // Execute javascript on the main web view
@@ -190,7 +190,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
             }
             webView.evaluateJavaScript(javaScript, completionHandler: nil)
         }
-        
+
         // Execute javascript on the external display web view (if available)
         if (target == .external) {
             guard let externalDisplayWebView = ExternalDisplayViewController.sharedWebView else { return }
@@ -201,7 +201,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
             externalDisplayWebView.evaluateJavaScript(javaScript, completionHandler: nil)
         }
     }
-    
+
     // Function to be called when external display is connected
     @objc func handleExternalDisplayConnected(_ notification: Notification) {
         if (MainViewController.debugMode == true) {
@@ -209,7 +209,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
         }
         evaluateJavascript(javaScript: """
             var __EXTERNAL_DISPLAY__ = true;
-            enCloseEvent('externalDisplayConnected');            
+            enCloseEvent('externalDisplayConnected');
             """
         )
     }
@@ -253,14 +253,21 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
 		return true
 	}
 
+    // MARK: JavaScript Native Interface
+    /*
+    This section bridges JavaScript calls to native Swift implementations.
+    Add your @objc exposed functions below this comment block to maintain code organization.
+    Keep interface methods simple and delegate complex logic to dedicated classes.
+    */
+
     // A custom "Hello, World!" function which is called from Javascript, that demonstrates how to perform a javascript call back after perfoming native operations
 	@objc func helloWorld(_ params: [String: String]) {
         var javaScript: String = ""
-        
+
         // Play a tweet sound
         let systemSoundID: SystemSoundID = 1016
         AudioServicesPlaySystemSound(systemSoundID)
-        
+
 		// process nativeCall successCallback function and send data to web UI
 		let successResponse = "You have successfully called a native function from javascript, congratulations!"
 		if let successCallback = params["successCallback"] {
@@ -268,11 +275,11 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
 		}
         evaluateJavascript(javaScript: javaScript)
 	}
-    
+
     // A custom "updateExternalDisplayMessage" function which is called from Javascript, that demostrates how to update an HTML element on external display from the native code
     @objc func updateExternalDisplayMessage(_ params: [String: String]) {
         var javaScript: String = ""
-        
+
         let message = params["message"] ?? ""
         javaScript = "document.querySelector('.prompt').innerText = '\(message)';"
         evaluateJavascript(javaScript: javaScript, target: .external)

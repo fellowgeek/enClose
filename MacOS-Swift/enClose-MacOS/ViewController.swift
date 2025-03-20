@@ -13,9 +13,9 @@ import Cocoa
 class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
 
     /* A boolean flag for enabling debug mode
-       
+
        IMPORTANT: set to false for production or users can inspect your web views.
-     
+
     */
     static let debugMode = true
 
@@ -31,16 +31,16 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
        self.index = index
        super.init(nibName: nil, bundle: nil)
     }
-    
+
     // Required initializer for decoding
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     // Override the loadView() function to create and configure the WKWebView
     override func loadView() {
         super.loadView()
-        
+
         let contentController = WKUserContentController()
         contentController.add(self, name: "enClose")
 
@@ -77,7 +77,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
 
         // Gather information about the system
         let processInfo = ProcessInfo.processInfo
-        
+
         let javaScriptConstants = """
             const __DEBUG_MODE__ = \(ViewController.debugMode);
             const __DEVICE_NAME__ = 'Mac';
@@ -177,17 +177,24 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
         }
         webView.evaluateJavaScript(javaScript, completionHandler: nil)
     }
-    
+
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
     }
 
+    // MARK: JavaScript Native Interface
+    /*
+    This section bridges JavaScript calls to native Swift implementations.
+    Add your @objc exposed functions below this comment block to maintain code organization.
+    Keep interface methods simple and delegate complex logic to dedicated classes.
+    */
+
     // A custom "Hello, World!" function which is called from Javascript, it speaks a message
     @objc func helloWorld(_ params: [String: String]) {
         var javaScript: String = ""
-                
+
         // process nativeCall successCallback function and send data to web UI
         let successResponse = "You have successfully called a native function from javascript, congratulations!"
         if let successCallback = params["successCallback"] {
