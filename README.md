@@ -70,5 +70,10 @@ enClose functions as a starter project, providing a simple and straightforward i
 
 ![Figure 1](/images/fig-01.png)
 
-# Support
-If you'd like to support my work, you can visit my Cash App at https://cash.me/$fellowgeek. Your support is greatly appreciated!
+# Sponsor enClose
+
+Want to support enClose's development? Become a sponsor on Patreon and help us bring innovative iOS hybrid app solutions to life.
+
+[https://patreon.com/enClose](https://patreon.com/enClose)
+
+Thank you for your support!
