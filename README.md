@@ -42,7 +42,7 @@ This extensive real-world implementation across both B2B and B2C environments de
 
 ### App Showcase
 
-<a href="https://enclose.app"><img src="/images/apps.png"></a>
+<a href="https://enclose.app/#showcase"><img src="/images/apps.png"></a>
 
 # Getting Started
 enClose functions as a starter project, providing a simple and straightforward installation process. You'll clone the project, customize a few key settings, and use it as the foundation for your application.
