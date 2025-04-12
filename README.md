@@ -70,6 +70,17 @@ enClose functions as a starter project, providing a simple and straightforward i
 
 ![Figure 1](/images/fig-01.png)
 
+# Example Project
+
+This sample project demonstrates the versatility and power of the enClose framework for building hybrid iOS applications using web technologies while accessing native device capabilities.
+
+### TV Chess Basic
+TV Chess - Basic is a two-player chess application that showcases seamless integration between web-based UI components and native iOS features. The project illustrates how developers can leverage familiar web technologies while still delivering a truly native experience with platform-specific functionality.
+
+Download the project for GitHub: [https://github.com/fellowgeek/tv-chess-basic](https://github.com/fellowgeek/tv-chess-basic)
+
+![TV Chess Basic](images/tv-chess-basic.png)
+
 # Sponsor enClose
 
 Want to support enClose's development? Become a sponsor on Patreon and help us bring innovative iOS hybrid app solutions to life.
