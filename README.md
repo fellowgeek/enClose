@@ -5,7 +5,7 @@
 enClose is an iOS and MacOS hybrid application development framework that enables developers to use familiar web technologies (JavaScript, HTML, and CSS) to build rich applications that perform like native apps.
 
 ### Documentation
-You can find complete documentation and sample code here: [enClose.app](https://www.eclose.app).
+You can find complete documentation and sample code here: [enClose.app](https://www.enclose.app).
 
 ### Core Concept
 
