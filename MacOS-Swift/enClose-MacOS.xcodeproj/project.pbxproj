@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E213D2772E51519900EC4E73 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E213D2762E51519900EC4E73 /* Logger.swift */; };
 		E29E73CD214F464100334050 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29E73CC214F464100334050 /* AppDelegate.swift */; };
 		E29E73CF214F464100334050 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29E73CE214F464100334050 /* ViewController.swift */; };
 		E29E73D1214F464200334050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E29E73D0214F464200334050 /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E213D2762E51519900EC4E73 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E29E73C9214F464100334050 /* enClose-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enClose-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29E73CC214F464100334050 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E29E73CE214F464100334050 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				E2BE5D6B214F474400F0FC65 /* enClose-MacOS.entitlements */,
 				E29E73CC214F464100334050 /* AppDelegate.swift */,
 				E29E73CE214F464100334050 /* ViewController.swift */,
+				E213D2762E51519900EC4E73 /* Logger.swift */,
 				E29E73D2214F464200334050 /* Main.storyboard */,
 				E29E73D0214F464200334050 /* Assets.xcassets */,
 				E29E73D5214F464200334050 /* Info.plist */,
@@ -144,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29E73CF214F464100334050 /* ViewController.swift in Sources */,
+				E213D2772E51519900EC4E73 /* Logger.swift in Sources */,
 				E29E73CD214F464100334050 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,7 +304,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14;
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -325,7 +329,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14;
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

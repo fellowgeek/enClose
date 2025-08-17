@@ -1,3 +1,6 @@
+let __DEBUG_MODE__ = true;
+
+
 // Event listener for custom "enclose:event" events
 document.addEventListener('enclose:event', function (event) {
 	console.log('enclose:event triggered.');
@@ -32,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			nativeCall: 'helloWorld',
 			successCallback: 'successCallbackFunction'
 		});
+
+		// Output a log message in JS and Xcode console
+		enCloseLog('Logo clicked.');
 	});
 
 	// Dynamically add decorative floating circles to the blueprint background.
@@ -40,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Callback function triggered by native code when the "helloWorld" call is successful.
 function successCallbackFunction(response) {
-	console.log(response);
+	// Output the response in the JS and Xcode console.
+	enCloseLog(response);
 
 	// Update the DOM element with class "response" to display the response data.
 	let myResponse = document.querySelector('.response');

@@ -136,10 +136,10 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
                 queryStringDictionary[key ?? ""] = value
             }
 
-            // Check if debug mode is enabled and print information
-            if(ViewController.debugMode == true) {
+            // Check if debug mode is enabled print information
+            if(ViewController.debugMode == true && iosMethod != "enCloseLog:") {
                 // Print the original request and the queryStringDictionary
-                print("Attempting to call native method: \(iosMethod)")
+                Logger.info("Attempting to call native method: \(iosMethod)")
                 print(String(data: try! JSONSerialization.data(withJSONObject: queryStringDictionary, options: .prettyPrinted), encoding: .utf8)!)
             }
 
@@ -150,7 +150,7 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
                 // If it does, perform the method
                 perform(selector, with: queryStringDictionary)
             } else {
-                print("Unable to find @objc method for selector: \(selector)")
+                Logger.info("Unable to find @objc method for selector: \(selector)")
             }
         }
     }
@@ -173,9 +173,21 @@ class ViewController: NSViewController, WKUIDelegate, WKScriptMessageHandler, WK
     // This function evaluates javascript on the main webview
     func evaluateJavascript(javaScript: String) {
         if (ViewController.debugMode == true) {
-            print("Evaluating Javascript (main):\n>_ \(javaScript)")
+            Logger.info("Evaluating Javascript (main):\n>_ \(javaScript)")
         }
         webView.evaluateJavaScript(javaScript, completionHandler: nil)
+    }
+
+    // enClose debug function to be called from javascript to display debug logs in Xcode
+    @objc func enCloseLog(_ params: [String: String]) {
+        
+        if let message = params["message"] {
+            Logger.debug(message,
+                         file: params["file"] ?? "",
+                         function: params["function"] ?? "",
+                         line: Int(params["line"] ?? "0") ?? 0
+            )
+        }
     }
 
     override var representedObject: Any? {

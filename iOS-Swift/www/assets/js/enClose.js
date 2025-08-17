@@ -40,6 +40,51 @@ function enClose(options = {
     }
 }
 
+// A debug-only function that logs messages to the JavaScript and Xcode consoles.
+function enCloseLog(...message) {
+    if (typeof __DEBUG_MODE__ !== 'undefined' && __DEBUG_MODE__ === true) {
+
+        let callSite = { link: '', file: 'unknown', function: '(anonymous)', line: '0' };
+
+        try {
+            // Create an error object to capture the stack trace
+            const err = new Error();
+
+            // err.stack is a string containing the stack trace.
+            if (err.stack) {
+                const stackLines = err.stack.split('\n');
+                const callerLine = stackLines[1] || ''; // Use index 1, provide fallback
+
+                // Use regex to extract file, function and line number
+                const match = callerLine.match(/^(?:(\w+)?@)?(?:https?:\/\/[^\/]+|file:\/\/\/)?([^:]+)(?::(\d+))?/);
+                if (match && match[2] && match[3]) {
+                    callSite.link = match[0].trim();
+                    callSite.file = match[2].trim();
+                    callSite.function = match[1] || '(anonymous)';
+                    callSite.line = match[3];
+                }
+            }
+        } catch (e) {
+            // Handle any error during stack trace parsing
+            console.error("Error getting call site:", e);
+        }
+
+        // Add file and line info to the log message
+        console.log(callSite.link);
+        console.log(...message);
+
+        enClose({
+            nativeCall: 'enCloseLog',
+            data: {
+                message: message.join(', '),
+                file: callSite.file,
+                function: callSite.function,
+                line: callSite.line
+            }
+        });
+    }
+}
+
 // Dispatch a custom enClose event
 function enCloseEvent(data) {
     const event = new CustomEvent(

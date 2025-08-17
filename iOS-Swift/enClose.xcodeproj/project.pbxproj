@@ -13,6 +13,7 @@
 		9622CA1D214867C6000FEAF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9622CA1C214867C6000FEAF1 /* Assets.xcassets */; };
 		9622CA20214867C6000FEAF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9622CA1E214867C6000FEAF1 /* LaunchScreen.storyboard */; };
 		96F01737214B11A000AE0D39 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 96F01736214B11A000AE0D39 /* www */; };
+		E213D2752E512CBE00EC4E73 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E213D2742E512CBE00EC4E73 /* Logger.swift */; };
 		E23D1DB12D0B041F0035B2EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D1DB02D0B041F0035B2EA /* SceneDelegate.swift */; };
 		E277752A2D0BDEF600E5047D /* ExternalDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27775292D0BDEF600E5047D /* ExternalDisplayViewController.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 		9622CA1F214867C6000FEAF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9622CA21214867C6000FEAF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F01736214B11A000AE0D39 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		E213D2742E512CBE00EC4E73 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E23D1DB02D0B041F0035B2EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E27775292D0BDEF600E5047D /* ExternalDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalDisplayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,6 +67,7 @@
 				E23D1DB02D0B041F0035B2EA /* SceneDelegate.swift */,
 				9622CA17214867C4000FEAF1 /* MainViewController.swift */,
 				E27775292D0BDEF600E5047D /* ExternalDisplayViewController.swift */,
+				E213D2742E512CBE00EC4E73 /* Logger.swift */,
 				9622CA1E214867C6000FEAF1 /* LaunchScreen.storyboard */,
 				9622CA19214867C4000FEAF1 /* Main.storyboard */,
 				9622CA1C214867C6000FEAF1 /* Assets.xcassets */,
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E213D2752E512CBE00EC4E73 /* Logger.swift in Sources */,
 				9622CA18214867C4000FEAF1 /* MainViewController.swift in Sources */,
 				9622CA16214867C4000FEAF1 /* AppDelegate.swift in Sources */,
 				E277752A2D0BDEF600E5047D /* ExternalDisplayViewController.swift in Sources */,
@@ -310,7 +314,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -334,7 +338,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.enClose;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

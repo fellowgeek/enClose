@@ -147,10 +147,10 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
 				queryStringDictionary[key ?? ""] = value
 			}
 
-            // Check if debug mode is enabled and print information
-            if(MainViewController.debugMode == true) {
+            // Check if debug mode is enabled print information
+            if(MainViewController.debugMode == true && iosMethod != "enCloseLog:") {
                 // Print the original request and the queryStringDictionary
-                print("Attempting to call native method: \(iosMethod)")
+                Logger.info("Attempting to call native method: \(iosMethod)")
                 print(String(data: try! JSONSerialization.data(withJSONObject: queryStringDictionary, options: .prettyPrinted), encoding: .utf8)!)
             }
 
@@ -161,7 +161,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
                 // If it does, perform the method
                 perform(selector, with: queryStringDictionary)
             } else {
-                print("Unable to find @objc method for selector: \(selector)")
+                Logger.info("Unable to find @objc method for selector: \(selector)")
             }
 		}
 	}
@@ -186,7 +186,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
         // Execute javascript on the main web view
         if (target == .main) {
             if (MainViewController.debugMode == true) {
-                print("Evaluating Javascript (main):\n>_ \(javaScript)")
+                Logger.info("Evaluating Javascript (main):\n>_ \(javaScript)")
             }
             webView.evaluateJavaScript(javaScript, completionHandler: nil)
         }
@@ -196,16 +196,28 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
             guard let externalDisplayWebView = ExternalDisplayViewController.sharedWebView else { return }
 
             if (MainViewController.debugMode == true) {
-                print("Evaluating Javascript (external display):\n>_ \(javaScript)")
+                Logger.info("Evaluating Javascript (external display):\n>_ \(javaScript)")
             }
             externalDisplayWebView.evaluateJavaScript(javaScript, completionHandler: nil)
+        }
+    }
+
+    // enClose debug function to be called from javascript to display debug logs in Xcode
+    @objc func enCloseLog(_ params: [String: String]) {
+        
+        if let message = params["message"] {
+            Logger.debug(message,
+                         file: params["file"] ?? "",
+                         function: params["function"] ?? "",
+                         line: Int(params["line"] ?? "0") ?? 0
+            )
         }
     }
 
     // Function to be called when external display is connected
     @objc func handleExternalDisplayConnected(_ notification: Notification) {
         if (MainViewController.debugMode == true) {
-            print("External display connected.")
+            Logger.info("External display connected.")
         }
         evaluateJavascript(javaScript: """
             var __EXTERNAL_DISPLAY__ = true;
@@ -217,7 +229,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
     // Function to be called when external display is disconnected
     @objc func handleExternalDisplayDisconnected(_ notification: Notification) {
         if (MainViewController.debugMode == true) {
-            print("External display disconnected")
+            Logger.info("External display disconnected")
         }
         evaluateJavascript(javaScript: """
             var __EXTERNAL_DISPLAY__ = false;
@@ -229,7 +241,7 @@ class MainViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler
     // Function to be called when external display is disconnected
     @objc func handleExternalDisplayWebViewFinishedLoading(_ notification: Notification) {
         if (MainViewController.debugMode == true) {
-            print("External display web view finished loading")
+            Logger.info("External display web view finished loading")
         }
         evaluateJavascript(javaScript: """
             enCloseEvent('externalDisplayWebViewFinishedLoading');
