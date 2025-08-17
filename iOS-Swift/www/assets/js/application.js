@@ -1,6 +1,3 @@
-let __DEBUG_MODE__ = true;
-
-
 // Event listener for custom "enclose:event" events
 document.addEventListener('enclose:event', function (event) {
 	console.log('enclose:event triggered.');
